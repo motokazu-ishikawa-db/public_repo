@@ -93,7 +93,8 @@ table.show(width=100)
 
 # COMMAND ----------
 
-display( table.to_spark() )
+df = table.to_spark()
+display( df )
 
 # COMMAND ----------
 
