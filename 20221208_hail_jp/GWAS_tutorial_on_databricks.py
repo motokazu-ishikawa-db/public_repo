@@ -14,7 +14,7 @@
 
 # COMMAND ----------
 
-BASE_DIR=dbutils.widgets.get('base_dir')
+BASE_DIR=""
 
 # COMMAND ----------
 
