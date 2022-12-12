@@ -14,7 +14,7 @@
 
 # COMMAND ----------
 
-BASE_DIR="/user/motokazu.ishikawa@databricks.com/hail"
+BASE_DIR=""
 
 # COMMAND ----------
 
