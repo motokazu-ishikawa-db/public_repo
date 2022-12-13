@@ -76,7 +76,7 @@ def get_ner(s):
   
 @dlt.table
 def tweeted_person():
-  return ( dlt.read("tweet")
+  return ( dlt.read_stream("tweet")
           .withColumn( "person", get_ner( f.col("text") ) )
           .filter( length("person") != 0 ) )
 
@@ -89,7 +89,7 @@ def tweeted_person():
 
 @dlt.table
 def tweeted_player():
-  df_tweeted_person = dlt.read("tweeted_person").drop("matching_rules")
+  df_tweeted_person = dlt.read_stream("tweeted_person").drop("matching_rules")
   df_player_name = dlt.read("player_name")
   return ( df_tweeted_person
           .join( df_player_name, df_tweeted_person.person == df_player_name.name_alias )
@@ -105,7 +105,7 @@ def tweeted_player():
 from pyspark.sql.functions import window
 @dlt.table
 def player_count():
-  return ( dlt.read("tweeted_player")
+  return ( dlt.read_stream("tweeted_player")
           .withWatermark("timestamp", "10 minutes")
           .groupBy( window( "timestamp", "5 minutes", "2 minutes"), "name_canonical" )
           .count()) 
