@@ -8,6 +8,16 @@
 
 # COMMAND ----------
 
+# Twitter APIから取得したJSONファイルを格納したディレクトリ
+TWEET_DIR = "/user/motokazu.ishikawa@databricks.com/tweet/"
+# 日本代表選手名をリストしたファイル
+#　　1列目： name_alias
+#　　２列目： name_canonical
+# 抽出した人名がname_aliasに一致したらその選手に該当するものとする
+PLAYER_DATA_CSV = "dbfs:/user/motokazu.ishikawa@databricks.com/japan_team_players.csv"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## TwitterのFiltered Stream APIから取得した日本代表に関するツイートのJSONファイルがS3に保存されているのでAuto Loaderを使ってDLTに読み込みます
 
@@ -24,7 +34,7 @@ def tweet():
   return (
     spark.readStream.format("cloudFiles")
       .option("cloudFiles.format", "json")
-      .load("/user/motokazu.ishikawa@databricks.com/tweet/")
+      .load(TWEET_DIR)
       .withColumn( "text", get_json_object( "data", "$.text").alias("text") )
       .withColumn( "id", get_json_object( "data", "$.id").alias("id") )
       .withColumn( "timestamp", current_timestamp() )
@@ -44,7 +54,7 @@ def player_name():
           .read
           .format("csv")
           .option("header","true")
-          .load("dbfs:/user/motokazu.ishikawa@databricks.com/japan_team_players.csv") )
+          .load(PLAYER_DATA_CSV) )
 
 # COMMAND ----------
 
