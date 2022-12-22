@@ -59,10 +59,6 @@ df_input = ( spark.read.format( "com.crealytics.spark.excel" )
 
 # COMMAND ----------
 
-print( df_input.head() )
-
-# COMMAND ----------
-
 display( df_input )
 
 # COMMAND ----------
@@ -79,7 +75,3 @@ df_flight = spark.createDataFrame( [["HND","SFO"],["HND","CDG"],["CDG","HND"]] )
   .option( "header", "false" )
   .mode( "append" )
   .save( xlsx_file_path ) )
-
-# COMMAND ----------
-
-
